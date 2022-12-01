@@ -4,8 +4,8 @@ on: push # ワークフローを実行するイベント。複数の場合は[pu
 jobs:
   unit-test: # ジョブID、他のジョブIDと重複してはいけない。Perlの変数名と同じく利用できる文字の制限がある
     name: Unit Test # ジョブ名
-    strategy:
-      matrix:
+    strategy: # マトリクスビルドのための設定
+      matrix: # マトリクスビルドの変数の組み合わせの定義
         os: [ubuntu-latest, windows-latest, macos-latest]
         node: [16, 19]
     runs-on: ${{ matrix.os }}
