@@ -4,14 +4,18 @@ on: push # ワークフローを実行するイベント。複数の場合は[pu
 jobs:
   unit-test: # ジョブID、他のジョブIDと重複してはいけない。Perlの変数名と同じく利用できる文字の制限がある
     name: Unit Test # ジョブ名
-    runs-on: ubuntu-latest # ジョブが実行されるマシンの定義。2022年現在は22.04
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [16, 19]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout # ステップ名
         uses: actions/checkout@v3 # アクションの実行：リポジトリをチェックアウトする
-      - name: Set Node.js 16.x # ステップ名
+      - name: Set Node.js ${{ matrix.node }} # ステップ名
         uses: actions/setup-node@v3 # アクションの実行：nodeのインストール
         with: # アクションのパラメータ。キーがパラメータ名、値がバリュー。Dockerイメージに渡すときは、entrypointとargsを設定する
-          node-version: "16" # key: value
+          node-version: ${{ matrix.node }} # key: value
       - name: Install dependencies
         run: npm ci # コマンドラインの実行を定義。書き方次第で複数のコマンドを記述して実行できる
       - name: Test
