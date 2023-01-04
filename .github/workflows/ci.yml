@@ -23,7 +23,7 @@ jobs:
       - name: Cache NPM
         uses: actions/cache@v3
         with:
-          path: ${{ steps.npm-cache.output.dir }}
+          path: ${{ steps.npm-cache.outputs.dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
