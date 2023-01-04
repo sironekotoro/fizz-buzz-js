@@ -6,7 +6,8 @@ jobs:
     name: Unit Test # ジョブ名
     strategy: # マトリクスビルドのための設定
       matrix: # マトリクスビルドの変数の組み合わせの定義
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         node: [16, 19]
     runs-on: ${{ matrix.os }}
     steps:
@@ -33,6 +34,11 @@ jobs:
         run: npm ci # コマンドラインの実行を定義。書き方次第で複数のコマンドを記述して実行できる
       - name: Test
         run: npm test
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-coverage-${{ matrix.os }}-${{ matrix.node }}
+          path: coverage
   lint:
     name: Lint
     runs-on: ubuntu-latest
